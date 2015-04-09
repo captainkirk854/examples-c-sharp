@@ -15,10 +15,10 @@ namespace InterviewScenarios.DataProcessing
         ///  > Scans through array to find element with smaller key
         ///  > Swaps this with 1st element
         /// </summary>
-        /// <param name="someData"></param>
-        public static void Selection (int[] someData)
+        /// <param name="someDataInteger32"></param>
+        public static void Selection (int[] someDataInteger32)
         {
-            Helpers.DataProcessing.selectionRecursive(someData, 0);
+            Helpers.DataProcessing.selectionRecursive(someDataInteger32, 0);
         }
 
         /// <summary>
