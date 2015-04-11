@@ -9,16 +9,25 @@ namespace InterviewScenarios.DataProcessing
     public static class SortMethods
     {
         /// <summary>
-        /// Selection
+        /// Selection sort - recursive ..
         /// Operational:
         ///  > Grabs 1st element in array/list
         ///  > Scans through array to find element with smaller key
         ///  > Swaps this with 1st element
+        ///  > Is UNSTABLE - ie indexes are output in a swapped state for same value keys
+        ///  > Recursive nature effectively limits size of array that can be sorted due to stack overflow possibility ..
         /// </summary>
         /// <param name="someDataInteger32"></param>
-        public static void Selection (int[] someDataInteger32)
+        /// <param name="startPos"></param>
+        public static void SelectionRecursive (int[] someDataInteger32, int startPos)
         {
-            Helpers.DataProcessing.selectionRecursive(someDataInteger32, 0);
+            // Console.WriteLine(string.Join(", ", someDataInteger32));
+            if (startPos < someDataInteger32.Length -1)
+            {
+                Helpers.DataProcessing.ArrayValueSwap(someDataInteger32, startPos, Helpers.DataProcessing.GetPositionOfLowestValue(someDataInteger32, startPos));
+                SelectionRecursive(someDataInteger32, startPos + 1);
+            }
+          // Console.WriteLine(string.Join(", ", someDataInteger32));
         }
 
         /// <summary>
