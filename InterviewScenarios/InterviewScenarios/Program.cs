@@ -5,7 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
-
+/*
+using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+*/
+ 
 namespace InterviewScenarios
 {
     class Program
@@ -14,24 +18,24 @@ namespace InterviewScenarios
         /// Consts ..
         /// </summary>
         const int ArrayElementMaxSize = 10000;
-        const int ArrayElementIncrement = 10;
-        const int StackSize = 10000000; // override default stack size for any recursive methods ...
+        const int ArrayElementIncrement = 100;
+        const int StackSize = 10000000; // Override default stack size for method(s) which use recursion ...
 
         static void Main(string[] args)
         {          
-            Thread thread = new Thread(new ThreadStart(RunMethodsLikeThisToUseNewStackSize), StackSize);
+            Thread thread = new Thread(new ThreadStart(RunMethodsLikeThisToMakeUseOfNewStackSize), StackSize);
             thread.Start();
-
-            Console.WriteLine("\nNous sommes fini ..");
-            Console.ReadLine();
         }
 
         /// <summary>
         /// Simple Wrapper Method to execute the various sorting methods for use in thread ...
         /// </summary>
-        static void RunMethodsLikeThisToUseNewStackSize()
+        static void RunMethodsLikeThisToMakeUseOfNewStackSize()
         {
             Run.SelectionSortRecursive(ArrayElementMaxSize, ArrayElementIncrement);
+            Run.DotNetSort(ArrayElementMaxSize, ArrayElementIncrement);
+            Console.WriteLine("\nNous sommes fini ..");
+            Console.ReadLine();
         }
     }
 }
