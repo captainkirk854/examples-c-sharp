@@ -1,2 +1,2 @@
 # codeMusings
-General area for code attempts 
+Some musings around the C# language
