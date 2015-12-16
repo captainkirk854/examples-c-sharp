@@ -1,6 +1,0 @@
-c:\users\dad\documents\visual studio 2012\Projects\InterviewScenarios\InterviewScenarios\bin\Debug\InterviewScenarios.exe.config
-c:\users\dad\documents\visual studio 2012\Projects\InterviewScenarios\InterviewScenarios\obj\Debug\InterviewScenarios.csprojResolveAssemblyReference.cache
-c:\users\dad\documents\visual studio 2012\Projects\InterviewScenarios\InterviewScenarios\bin\Debug\InterviewScenarios.exe
-c:\users\dad\documents\visual studio 2012\Projects\InterviewScenarios\InterviewScenarios\bin\Debug\InterviewScenarios.pdb
-c:\users\dad\documents\visual studio 2012\Projects\InterviewScenarios\InterviewScenarios\obj\Debug\InterviewScenarios.exe
-c:\users\dad\documents\visual studio 2012\Projects\InterviewScenarios\InterviewScenarios\obj\Debug\InterviewScenarios.pdb
