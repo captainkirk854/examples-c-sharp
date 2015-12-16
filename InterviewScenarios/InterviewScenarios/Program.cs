@@ -34,7 +34,7 @@ namespace InterviewScenarios
         {
             Run.SelectionSortRecursive(ArrayElementMaxSize, ArrayElementIncrement);
             Run.DotNetSort(ArrayElementMaxSize, ArrayElementIncrement);
-            Console.WriteLine("\nNous sommes fini ..");
+            Console.WriteLine("\nNous sommes fini maintenant ..");
             Console.ReadLine();
         }
     }
