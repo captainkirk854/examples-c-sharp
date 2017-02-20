@@ -1,0 +1,39 @@
+﻿<Page
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="Pink" Width="300">
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Ellipse Width="{Binding ElementName=ooo10HorizontalSlider01ooo, Path=Value}" Height="{Binding ElementName=ooo10HorizontalSlider02ooo, Path=Value}" Fill="YellowGreen" />
+            <Ellipse Width="{Binding ElementName=ooo10HorizontalSlider01ooo, Path=Value}" Height="{Binding ElementName=ooo10HorizontalSlider02ooo, Path=Value}" Fill="Blue" />
+            <Ellipse Width="{Binding ElementName=ooo10HorizontalSlider01ooo, Path=Value}" Height="{Binding ElementName=ooo10HorizontalSlider02ooo, Path=Value}" Fill="Green" />
+            <Ellipse Width="{Binding ElementName=ooo10HorizontalSlider01ooo, Path=Value}" Height="{Binding ElementName=ooo10HorizontalSlider02ooo, Path=Value}" Fill="Red" />
+        </StackPanel>
+
+        <Slider 
+          x:Name="ooo10HorizontalSlider01ooo" 
+          VerticalAlignment="Top" 
+          Minimum="10" 
+          Maximum="200" 
+          Value="{Binding ElementName=ooo10HorizontalSliderMASTERooo, Path=Value, Mode=Twoway}" 
+          Margin="50" />
+
+        <Slider 
+          x:Name="ooo10HorizontalSlider02ooo" 
+          VerticalAlignment="Bottom" 
+          Minimum="10" 
+          Maximum="200" 
+          Value="{Binding ElementName=ooo10HorizontalSliderMASTERooo, Path=Value, Mode=Oneway}" 
+          Margin="50" />
+
+        <Slider 
+          x:Name="ooo10HorizontalSliderMASTERooo"
+          Background="Blue"
+          VerticalAlignment="Bottom" 
+          Minimum="10" 
+          Maximum="200" 
+          Value="50" 
+          Margin="10" />
+
+    </Grid>
+</Page>

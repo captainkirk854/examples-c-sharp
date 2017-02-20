@@ -1,0 +1,38 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="WpfSimpleGraphics.MainWindow"
+        Title="The Monolith Monsters" Height="600" Width="600"
+
+        xmlns:vm="clr-namespace:WpfSimpleGraphics.ViewModel"
+>
+   
+    <Window.Resources>
+        <vm:UiToViewModelConduit x:Key="viewModel"/>
+    </Window.Resources>
+        
+    <Grid DataContext="{Binding Mode=OneWay, Source={StaticResource viewModel}}">
+        
+        <!--Create Background sun ..-->       
+        <Ellipse>
+            <Ellipse.Fill>
+                <SolidColorBrush>
+                    <SolidColorBrush.Color>
+                        <Color A="126" R="255" G="204"></Color>
+                    </SolidColorBrush.Color>    
+                </SolidColorBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        
+
+        <!--Define the ViewPort for graphics to appear in .. -->
+        <Viewport3D x:Name="xamlVpt3D"/>
+        
+        <!-- -->
+        <!--Create Rolling Hills -->
+        
+        <!--Controls: Slider-->
+        <Slider Name="Silder" HorizontalAlignment="Center"  Margin="146,19,146,0" VerticalAlignment="Top" Width="300"  Value="{Binding UIControlHasChangedNowShowSomething, Mode=TwoWay}" IsEnabled="{Binding UIControlHasChangedNowShowSomething, Mode=TwoWay}"/>
+
+    </Grid>
+</Window>

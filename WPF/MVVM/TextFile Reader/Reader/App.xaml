@@ -1,0 +1,14 @@
+﻿<Application x:Class="WpfApplication1.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+   
+    <Application.Resources>
+        <LinearGradientBrush x:Key="ItalianFlagBackgroundForButtons" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Green" Offset="0"></GradientStop>
+            <GradientStop Color="White" Offset="0.5"></GradientStop>
+            <GradientStop Color="Red" Offset="1"></GradientStop>
+        </LinearGradientBrush>
+    </Application.Resources>
+
+</Application>

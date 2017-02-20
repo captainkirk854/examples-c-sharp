@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="SimpleMVVM.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:model="clr-namespace:SimpleMVVM.Models"
+             xmlns:viewmodel="clr-namespace:SimpleMVVM.ViewModels"
+             xmlns:src="clr-namespace:SimpleMVVM"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <!--Define a DataTemplate as shareable resource to ensure that the StarTrek Character object can be visualised by using its Appellation property -->   
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type model:StarTrekCharacter}">          
+            <TextBlock 
+                Text="{Binding Appellation}" 
+                HorizontalAlignment="Center" 
+            >
+            </TextBlock>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
+        <GroupBox 
+                Header="Choose Character:" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top" 
+            >
+          
+                <ListBox 
+                    ItemsSource="{Binding AllTrekCharacters}"
+                    SelectedItem="{Binding CurrentlySelectedTrekCharacter}"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" 
+                    Margin="0,0,-2,172"
+                />
+        </GroupBox>
+        
+        <TextBox 
+            Margin="105,217,103,62"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="{Binding CurrentlySelectedTrekCharacter.Race}">
+        </TextBox>
+        
+        <TextBox 
+            Margin="47,260,50,19"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="{Binding CurrentlySelectedTrekCharacter.Description}">   
+        </TextBox>
+
+        <Button
+            Name = "myOKButton"
+            Command="{Binding CommandButtonOK}" 
+            Content="OK" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Margin="269,94,10,186" 
+            Click="myOKButton_Click" 
+            MouseEnter ="myOKButton_MouseEnter" 
+            MouseLeave="myOKButton_MouseLeave">
+        </Button>
+        
+    </Grid>
+
+</UserControl>

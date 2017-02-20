@@ -1,0 +1,80 @@
+Source	: MainWindow.xaml
+Type	: XAML
+
+
+Code Snippet:
+
+    <Window.Resources>
+        <DataTemplate
+            DataType="{x:Type viewmodel:StreamData}">
+            <view:MainView></view:MainView>
+        </DataTemplate>        
+    </Window.Resources>
+
+
+    <ContentPresenter>
+        <ContentPresenter.Content>
+            <viewmodel:StreamData></viewmodel:StreamData>
+        </ContentPresenter.Content>
+    </ContentPresenter>
+
+
+
+Comment for Code Snippet:
+
+What does the above actually do ?
+	research: View as DataTemplate" (VaD) vs. "View as Window" (VaW)
+
+
+<Resources> Section
+	This defines the <DataTemplate>
+
+	What does the DataTemplate help with?
+    
+		People use DataTemplates with ViewModel Class datatypes when they want to dynamically switch Views depending on the ViewModel.
+		Within the DataTemplate, there is a DataType property. The "DataType" property GETS or SETS the data type for which this DataTemplate is intended.
+		
+		> If the template is intended for object data, this property contains the type name of the data object (as a string) e.g. 'viewmodel:StreamData'
+		> To refer to the type name of the class use the x:Type Markup Extension e.g. viewmodel:StreamData
+    
+		This is the generic pattern used:
+    
+		<Window>
+			<Window.Resources>
+
+			   <DataTemplate DataType="{x:Type local:VM1}">
+				  View 1 Here
+			   </DataTemplate>
+
+				<DataTemplate DataType="{x:Type local:VM2}">
+				   View 2 here
+				</DataTemplate>
+
+			<Window.Resources>
+
+			<ContentPresenter Content="{Binding}"/>
+		</Window>
+
+		So, 
+			> if Window.DataContext is an instance of VM1, then View1 will be displayed, 
+			> if Window.DataContext is an instance of VM2, then View2 will be displayed.
+			> etc.
+    
+		It is probably overkill if only one view is used, but the pattern still works.
+
+<Content Presenter> Section:
+    To place your view models in a view you can use a ContentPresenter (for a single ViewModel):
+        <ContentPresenter Content="{Binding }" />
+
+So what are we actually achieving here?
+	DataTemplate: 
+		> In effect what we want to do is to tell WPF to "display" our view model model classes and 
+		  because the view models are just plain classes, WPF does not know how to "render" them. 
+		> The bonus of this approach is that the DATACCONTEXT for the DataTemplate content will 
+	      automatically be set to the view model.
+
+	ContentPresenter:
+		> Places ViewModel classes in a view
+
+	So in our case, the <DataTemplate DataType> binds the ViewModel's StreamData class to the 'MainView' view while the <ContentPresenter>
+	assists in class presentation

@@ -1,0 +1,23 @@
+﻿<Window x:Class="WpfApplication1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewmodel="clr-namespace:WpfApplication1.ViewModel"
+        xmlns:view="clr-namespace:WpfApplication1.View"
+        Title="FileReader" Height="350" Width="750"
+        ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow" Background="#FF2C4885" Icon="Resources/reader.png"
+>
+    
+    <Window.Resources>
+        <DataTemplate
+            DataType="{x:Type viewmodel:StreamData}">
+            <view:MainView></view:MainView>
+        </DataTemplate>        
+    </Window.Resources>
+
+    <ContentPresenter>
+        <ContentPresenter.Content>
+            <viewmodel:StreamData></viewmodel:StreamData>
+        </ContentPresenter.Content>
+    </ContentPresenter>
+  
+</Window>

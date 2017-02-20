@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="WpfApplication1.View.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:model="clr-namespace:WpfApplication1.Model"
+             mc:Ignorable="d" Height="300" Width="675"
+             >
+    
+    <Grid Margin="0,0,-66,0">
+        
+        <!--FileOpen Dialog -->
+        <Button Name="BtnFileOpen"  Content="Open File" Background="{StaticResource ResourceKey=ItalianFlagBackgroundForButtons}" HorizontalAlignment="Left" Margin="29,10,0,0" VerticalAlignment="Top" Height="25" Width="56" Click="BtnFileOpen_Click"/>
+        <TextBox Name="TxtBoxSelectedFile"  HorizontalAlignment="Left" Height="25" Margin="90,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="575" Text="{Binding Path=StreamFileSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!--File Processing visuals -->
+        <TextBox Name="RecordAll" HorizontalAlignment="Left" Height="25" Margin="90,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="575" Text = "{Binding StreamRecord}"/>
+        <TextBox Name="RecordWord" HorizontalAlignment="Left" Height="20" Margin="90,117,0,0" TextWrapping="Wrap" Text="{Binding StreamRecordWord}" VerticalAlignment="Top" Width="108" FontSize="10"/>
+        <Label Content = "{Binding StreamSourceFileName}" HorizontalAlignment="Left" Margin="90,40,0,0" VerticalAlignment="Top" Width="575" Height="20" FontSize="8"/>
+        
+        <!-- Record Counter-->
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="615,127,0,0" TextWrapping="Wrap" Text = "{Binding StreamRecordCount}" VerticalAlignment="Top" Width="50" FontSize="8"/>
+      
+        <!--Slider -->
+        <Slider Name="PauseSlider" HorizontalAlignment="Left" Margin="90,228,0,0" VerticalAlignment="Top" Width="575" Minimum="0" Maximum="1000" Value="{Binding StreamReadSpeedPause, Mode=TwoWay}"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="615,254,0,0" TextWrapping="Wrap" Text="{Binding ElementName=PauseSlider, Path=Value, Mode=OneWay}" VerticalAlignment="Top" Width="50" FontSize="8"/>
+
+
+        <!-- How to bind to another object dynamically ..??
+        <Label DataContext="{DynamicResource ResourceKey=model}" Content = "{Binding FilePath}" HorizontalAlignment="Left" Margin="29,181,0,0" VerticalAlignment="Top" Width="575" Height="20" FontSize="8"/>
+        -->
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,28 @@
+Source	: App.xaml
+Type	: XAML
+
+
+Code Snippet:
+
+    <Application.Resources>
+        <LinearGradientBrush x:Key="ItalianFlagBackgroundForButtons" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Green" Offset="0"></GradientStop>
+            <GradientStop Color="White" Offset="0.5"></GradientStop>
+            <GradientStop Color="Red" Offset="1"></GradientStop>
+        </LinearGradientBrush>
+    </Application.Resources>
+
+
+
+Comment for Code Snippet:
+
+	What the above code snippet does is to define a "Logical" resource. This is when elements and/or their styles
+	are defined in this class' (Application) Resources property. These are typically meant to be shared by multiple 
+	child elements. Resources fall into 2 broad categories: Styles and Data providers of which there are 2 type:
+	Static or Dynamic 
+
+	As this class happens to sit at the top of the WPF Applicaton Class hierarchy, the "ItalianFlagBackgroundForButtons"
+	LinearGradientBrush style can be used by any inherited UI element.
+
+
+	Note the name: <Application.Resources> (if in MainWindow.xaml, the required name would be: <Window.Resources>)

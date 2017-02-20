@@ -1,0 +1,121 @@
+An Examination of Programming Languages to solve a common Problem
+Published by tdshipley on 19th June 2015
+
+Setting the Scene
+I needed to investigate a number of new languages. Personally I like to tackle a real problem to help push beyond the typical “hello world” application written to introduce a new language.
+This post details a simple image recovery tool I created in Go. It will not go through the code line by line as the primary aim was not to teach the solution but instead highlight the interesting parts specific to Go.
+The Problem
+The original problem was solved in (perhaps not very idiomatically) C as part of CS50  an introductory course offered by Harvard to students at the college and online via EdX and the Harvard Extension School. It teaches mostly through a series of problems sets which mostly focus on using C to solve them. One of the more interesting problem sets is Problem Set 4: Forensics.
+Before looking at any code it is important to give a little context (all code is available on GitHub for those that are interested).
+Key characteristics of the problem have been outlined below:
+What we have:
+* a forensic image of a cameras SD card 
+What to attempt:
+* Recover 16 deleted images from the file numbered 001.jpg through to 016.jpg. 
+Points of note:
+o The card was wiped with zeros before images were taken and deleted (This makes the slack space of the image full of zeros simplifying image recovery).
+o The card stores data in contiguous 512 byte blocks. If an image is 500 bytes it will still occupy one block (with some slack space left).
+o Trailing zeros in the recovered image is acceptable.
+o It is OK to hardcode the path of the file.
+
+Background Theory – Finding JPEGS - How can a jpeg file can be identified in a forensic image?
+As mentioned above images are stored in blocks of 512 bytes so no matter the actual size of the image it will always take up 512 bytes on the card. Therefore we know that an image could start every 512 bytes – so instead of reading the file byte by byte we can read in 512 byte blocks and check that for the start of a file.
+Now how is the file identified in the 512 byte block?
+Fortunately while JPEG files are complex, their headers are simple. If the first 4 bytes of your 512 byte block match the either sequence below then it is a JPEG:
+0xff 0xd8 0xff 0xe0
+Or:
+0xff 0xd8 0xff 0xe1
+Of course if the card had not been zero wiped this part would become a lot harder as slack space could also match the pattern leading to false positives.
+
+
+Coding a Solution in Go
+There are a few interesting differences in Go compared to other languages I’ve worked with. Quite a few are shown in the snippet below:
+1234567func isJPEG(fileBlock []byte) (result bool)  {
+  result = false
+  if (fileBlock[0] == 0xff && fileBlock[1] == 0xd8 && fileBlock[2] == 0xff && (fileBlock[3] == 0xe0 || fileBlock[3] == 0x0e1))   {
+    result = true
+  }
+  return result
+}
+
+Function Declarations – Type Position and Named Return Variables
+Go uses functions which isn’t too usual but look at the declaration:
+func isJPEG(fileBlock []byte) (result bool) {
+A couple of interesting ideas from Go are displayed in this one line:
+* The parameter fileBlock has the type (byte array) declared after its name rather than before.
+The aim is making functions which take pointers more readable. Detailed in the blog postGo’s Declaration Syntax. This same style is found in variable declarations too.
+* The second pair of parenthesis look strange (or at least it did to me) this is a named return parameter.
+In Go you can declare the variable that will be returned in the function declaration. This is considered the idiomatic approach to declaring return variables but is however optional.
+* There can also be many return variables from a function using this method. This is something I had seen a lot of it go code:
+file, err := os.Open("card.raw")
+Here using an “OS package” (think Ruby Gems or .Net Libraries) the Open function returns two variables the file and any errors that occurred as part of the process.
+Note: The opening curly brace must be on the same line as the declaration. This is because of how Semicolons are added in Go covered elsewhere.
+Use of Semicolons
+There is more to be learnt when inspecting the body of isJPEG:
+12345result = false
+if (fileBlock[0] == 0xff && fileBlock[1] == 0xd8 && fileBlock[2] == 0xff && (fileBlock[3] == 0xe0 || fileBlock[3] == 0x0e1))   {
+  result = true
+}
+return result
+
+* Go uses semicolons to mark the end of a statement. But there are no semicolons in my function above. The Go parser inserts them for you following a rule defined in Effective Go:
+
+If the last token before a newline is an identifier (which includes words like int and float64), a basic literal such as a number or string constant, or one of the tokens.
+This is a little difficult to parse but in simpler terms means if you create a newline after a token that normally has a semicolon after it then it shall be added.
+This is why a curly brace must be on the same line as the statement – for example an if statement:
+123if (fileBlock[0] == 0xff && fileBlock[1] == 0xd8 && fileBlock[2] == 0xff && (fileBlock[3] == 0xe0 || fileBlock[3] == 0x0e1))   {
+  result = true
+}
+
+If the curly brace was moved from the end of the if statement the last token would be a closing parenthesis. This would have a semicolon after it so one would be inserted by the lexer and your code would be syntactically incorrect.
+There are a few exceptions to all of this. The most notable of my brief experiment with the language is the For loop which works pretty much as you would expect any C style language would. Except in Go there is only a For loop and all parts are optional. So not so much as you would expect!
+Variables
+Variables in Go can be both static and dynamically typed. There are multiple ways to define a variable: 
+The var keyword
+var i, j, k int
+Above I have declared three int variables i, j and k as type int. 
+I needn’t have specified a type - I could just have easily defined them as:
+var i, j, k
+At this point the type will be inferred by the compiler at the first assignment.
+Within Functions
+Within a function I can shorten a dynamically typed variables declaration and assignment into one simple operator:
+y := 42
+The := operator will assign a value to a newly created variable of which is named on the left of it in this case 42 is assigned to the newly declared variable y.
+Deferring a Function and Parentheses
+There are two more unusual bits of Go I found through my exploration that deserve a brief mention.
+Deferring a Function
+In Go you can defer a function call to be executed immediately before the executing function returns. A good example is freeing resources like an open file:
+123456789101112// Taken from https://golang.org/doc/effective_go.html#defer
+func Contents(filename string) (string, error) {
+  f, err := os.Open(filename)
+  if err != nil {
+      return "", err
+  }
+  
+  defer f.Close()  // f.Close will run when we're finished.
+  
+  var result []byte
+  return string(result), nil // f closed here
+}
+
+Here the file is opened and after error checking a function call to f.close() is deferred. Just before the function returns the close function will be called.
+Now you no longer need to remember to close just defer when opening a file.
+Parentheses
+In if, for and switch you do not need parentheses however you can use them when you want to force an order of operations:
+123if fileBlock[0] == 0xff && fileBlock[1] == 0xd8 && fileBlock[2] == 0xff && (fileBlock[3] == 0xe0 || fileBlock[3] == 0x0e1)   {
+  result = true
+}
+
+Here I have updated the if statement for finding a JPEG. Now it only uses parentheses where they are needed at the end of the if statement around the or (||).
+Conclusions
+Go has similarities to Ruby in its attempt to make the code as clean as possible and removing redundant characters. Although there are a few things which threw me like the type being on the right hand side of a variable name. But clearly readability is one of the main aims of Go - in fact they even have a tool to format your code: gofmt.
+
+
+THEN YOU CAN CONTINUE WITH THE REST OF YOUR LANGUAGE SERIES
+Coding a Solution in SQL
+Coding a Solution in SQL
+Coding a Solution in SQL
+Coding a Solution in SQL
+Coding a Solution in C#
+Coding a Solution in Haskell
+Coding a Solution in Scala

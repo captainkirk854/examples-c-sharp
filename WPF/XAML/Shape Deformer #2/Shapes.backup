@@ -1,0 +1,93 @@
+
+<!-- 
+  Initialise with the usual XAML namespace
+  This is hard-coded inside the WPF assemblies and is just arbitrary
+  - there is no associated website!
+-->
+<Page 
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>  
+   <Grid Background="Blue">
+   
+       <!-- 
+        Define my "Master" Slider
+         > This will control my slave sliders
+       -->
+      <Slider
+         x:Name="MASTERoSLIDER"
+         Margin="10"
+         VerticalAlignment="Bottom"
+         Background="Black"
+         Maximum="200"
+         Minimum="10"
+         Value="50"/>
+         
+       <!-- 
+        Define my "Slave" Slider01
+         > This is controlled by user and Master-slider ..
+         > Binding Mode: "OneWay" - means that its own value is determined by the user and master-slider only
+                         and not transmitted anywhere.
+       -->
+      <Slider
+         x:Name="SLAVEoSLIDER01"
+         Margin="50"
+         VerticalAlignment="Top"
+         Maximum="200"
+         Minimum="1"
+         Value="{Binding ElementName=MASTERoSLIDER, Path=Value, Mode=Oneway}"/>
+
+       <!-- 
+        Define my "rebellious" "Slave" Slider02
+         > This is controlled by user and Master-slider ..
+         > Binding Mode: "TwoWay" - means that its own value is determined by the user and master-slider only
+                          However, when user-controlled its value is transmitted back to the master-slider!!
+                          (which in turn then drives SLAVEoSLIDER01) !!
+       -->
+      <Slider
+         x:Name="SLAVEoSLIDER02"
+         Margin="50"
+         VerticalAlignment="Bottom"
+         Maximum="200"
+         Minimum="1"
+         Value="{Binding ElementName=MASTERoSLIDER, Path=Value, Mode=Twoway}"/>
+ 
+ 
+      <!--
+        A collection of stack panels with some ellipses and rectangles in them whose
+        size depends on the slider values defined above using WPF's binding mechanism
+      -->
+      <StackPanel HorizontalAlignment="Left"  VerticalAlignment="Center">
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="YellowGreen"/>
+         <Rectangle Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="YellowGreen"/>
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Green"/>
+         <Rectangle Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Red"/>
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Red"/>
+      </StackPanel>
+      
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+         <Rectangle Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="YellowGreen"/>
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Green"/>
+         <Rectangle Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Red"/>
+      </StackPanel>
+      
+      <StackPanel HorizontalAlignment="Right"  VerticalAlignment="Center">
+         <Rectangle Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Red"/>
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Red"/>
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="Green"/>
+         <Ellipse Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="YellowGreen"/>
+         <Rectangle Width="{Binding ElementName=SLAVEoSLIDER01, Path=Value}" Height="{Binding ElementName=SLAVEoSLIDER02, Path=Value}" Fill="YellowGreen"/>
+      </StackPanel>
+      
+      <!--
+        Some Text to indicate the value of the Master Slider
+        Interestingly, the binding mode is implicitly TWOWAY (as it's not explicitly defined) - this means we can type directly into the textbox with a value to adjust
+        the slider value :)
+      -->
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
+        <Label Foreground="White">Master Slider Value:</Label>
+        <TextBox Name="MyText" HorizontalAlignment="Center" Text="{Binding ElementName=MASTERoSLIDER, Path=Value}"></TextBox>
+      </StackPanel>
+      
+   </Grid>
+</Page>

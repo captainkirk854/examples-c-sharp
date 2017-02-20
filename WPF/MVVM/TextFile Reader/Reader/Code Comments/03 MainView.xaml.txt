@@ -1,0 +1,82 @@
+Source	: MainView.xaml
+Type	: XAML
+
+As this is the main GUI, there are few separate sections to discuss.
+
+General Comment:
+The definition of namespace alias is not required in this source as the datacontext has already been set to be - ViewModel.StreamData class
+by its parent window - MainWindow.xaml.
+
+So these types of declarations are not required:
+            >  xmlns:model="clr-namespace:WpfApplication1.Model"
+            >  xmlns:viewmodel="clr-namespace:WpfApplication1.ViewModel"
+            >  xmlns:src="clr-namespace:WpfApplication1"
+            
+
+Open File Dialog
+	The File-Open Dialog is pinched from Windows Forms as there is no WPF equivalent.
+            
+	Code Snippet:
+		<Button Name="BtnFileOpen"  
+		Content="Open File" 
+		Background="{StaticResource ResourceKey=ItalianFlagBackgroundForButtons*}" 
+		HorizontalAlignment="Left" 
+		Margin="29,10,0,0" 
+		VerticalAlignment="Top" 
+		Height="25" 
+		Width="56" 
+		Click="BtnFileOpen_Click"/>
+
+		*This uses the Static Resource (ItalianFlagBackgroundForButtons) defined in and inherited from App.xaml
+
+	The Click event uses the 'BtnFileOpen_Click' event handler in the code-behind MainView.xaml.cs:
+    
+		using System.Windows.Forms; // if a WPF project, dll reference also has to be manually added
+
+		/// <summary>
+		/// The btn file open_ click.
+		/// </summary>
+		/// <param name="sender">
+		/// The sender.
+		/// </param>
+		/// <param name="e">
+		/// The e.
+		/// </param>
+		private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
+		{
+			var fileDialog = new OpenFileDialog { Multiselect = false, Filter = "A Text File (*.txt)|*.txt" };
+			var result = fileDialog.ShowDialog();
+			switch (result)
+			{
+				case DialogResult.OK:
+					TxtBoxSelectedFile.Text = fileDialog.FileName;
+					break;
+				case DialogResult.Cancel:
+				default:
+					break;
+			}
+		}
+
+		TextBox
+			Name="TxtBoxSelectedFile"  
+			HorizontalAlignment="Left" 
+			Height="25" 
+			Margin="90,10,0,0" 
+			TextWrapping="Wrap"  
+			VerticalAlignment="Top" 
+			Width="575" 
+			Text="{Binding Path=StreamFileSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+	Comment for Code Snippet:
+		TxtBoxSelectedFile contains the name of the user-selected file.
+		The "Text" property is set in the code-behind (MainView.xaml.cs) as part of BtnFileOpen_Click method (see above)
+		The definition of the Text property in the XAML has some critical components
+		 i.e. Text="{Binding Path=StreamFileSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+			> It binds to the StreamFileSource property of the ViewModel
+			> The UpdateSourceTrigger=PropertyChanged 
+			> Mode=TwoWay
+		The result of the text binding definition means:
+			> Binding to the text of the TxtBox means we can scan for changes of value in the Txtbox.
+			> The use of the UpdateSourceTrigger=Property Changed means means the StreamFileSource Property is set/get everytime the user selects a file 
+			  which then triggers another event (like the reading/display of the file contents via properties of the viewModel)
+			> The TwoWay binding mode is also critical - if either one of the properties changes Text or StreamFileSource, the other one is automatically updated.
